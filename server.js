@@ -35,13 +35,16 @@ io.on("connection", function(socket) {
     });
 
     socket.on("disconnect", function() {
-        --numUsers;
-        console.log("User disconnected");
+        if(addedUser)
+        {
+            --numUsers;
+            console.log("User disconnected");
 
-        // emit  globally (all clients) that a person has disconnected
-        socket.broadcast.emit("user left", {
-            username: socket.username,
-            numUsers: numUsers
-        });
+            // emit  globally (all clients) that a person has disconnected
+            socket.broadcast.emit("user left", {
+                username: socket.username,
+                numUsers: numUsers
+            });
+        }
     });
 });
