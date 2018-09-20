@@ -12,11 +12,25 @@ app.get("/", function(req, res) {
 });
 
 var numUsers = 0;
+var videoId = "mEU0stNfkxI";
+var startTime = 0;
+var interval;
 
 io.on("connection", function(socket) {
     var addedUser = false;
 
     console.log("User Connected");
+
+    if (numUsers == 0) {
+        interval = setInterval(() => {
+            startTime++;
+        }, 1000);
+    }
+
+    socket.emit("video data", {
+        id: videoId,
+        timestamp: startTime
+    });
 
     // when the client emits 'add user', this listens and executes
     socket.on("add user", username => {
@@ -35,9 +49,14 @@ io.on("connection", function(socket) {
     });
 
     socket.on("disconnect", function() {
-        if(addedUser)
-        {
+        if (addedUser) {
             --numUsers;
+
+            if(numUsers == 0){
+                clearInterval(interval);
+                startTime = 0;
+            }
+
             console.log("User disconnected");
 
             // emit  globally (all clients) that a person has disconnected
