@@ -23,7 +23,7 @@ io.on("connection", function(socket) {
 
     if (numUsers == 0) {
         interval = setInterval(() => {
-            if (startTime == 1670) {
+            if (startTime >= 1539) {
                 startTime = 0;
             } else {
                 startTime++;
