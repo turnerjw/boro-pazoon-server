@@ -23,7 +23,11 @@ io.on("connection", function(socket) {
 
     if (numUsers == 0) {
         interval = setInterval(() => {
-            startTime++;
+            if (startTime == 1670) {
+                startTime = 0;
+            } else {
+                startTime++;
+            }
         }, 1000);
     }
 
@@ -52,7 +56,7 @@ io.on("connection", function(socket) {
         if (addedUser) {
             --numUsers;
 
-            if(numUsers == 0){
+            if (numUsers == 0) {
                 clearInterval(interval);
                 startTime = 0;
             }
@@ -67,5 +71,5 @@ io.on("connection", function(socket) {
         }
     });
 
-    socket.on("drawing", (data) => socket.broadcast.emit("drawing", data));
+    socket.on("drawing", data => socket.broadcast.emit("drawing", data));
 });
